@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.button {
+    font-size: 25px;
+    background-color: crimson;
+    box-sizing: border-box;
+    border-radius: .25rem;
+}
+
+#prompt {
+    font-size: 50px;
+}
