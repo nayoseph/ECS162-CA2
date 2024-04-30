@@ -1,0 +1,54 @@
+:root {
+	--button_color: rgb(199, 199, 199);
+	--button_hover_color: rgb(171, 171, 171);
+}
+
+.game {
+	display: flex;
+}
+
+.board {
+	max-width: 450px;
+	max-height: 450px;
+	align-items: center;
+	display: grid;
+	grid-template-columns: repeat(9, 1fr);
+	padding: auto;
+}
+
+.cell {
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	width: 50px;
+	height: 50px;
+	padding: 25px;
+	border: 2px solid black;
+	cursor: pointer;
+	background-color: var(--button_color);
+}
+
+.number-pad {
+	max-width: 150px;
+	display: grid;
+	align-items: center;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+}
+
+.number-pad-cell {
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	width: 50px;
+	height: 50px;
+	padding: 25px;
+	border: 2px solid black;
+	cursor: pointer;
+	background-color: var(--button_color);
+}
+
+.cell:hover {
+	background-color: var(--button_hover_color);
+}
+

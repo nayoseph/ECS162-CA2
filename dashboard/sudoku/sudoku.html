@@ -2,19 +2,54 @@
 <html>
 	<head>
 		<title>Nahom's Sudoku Game</title>
-		<link rel="stylesheet" href="sudoku.css">
-		<script src="sudoku.js"></script>
+		<link rel="stylesheet" href="./sudoku.css">
+		<script src="./sudoku.js"></script>
 	</head>
 
 	<body>
 		<header id="title">Nahom's Sudoku Game</header>
 		<p><a href="../dashboard.html">Return to dashboard.</a></p>
 
-		<div id="board">
-			<script>
-				// iterate over each cell and add it to board class
-			</script>
-		</div>
+		<div class="game">
+			<div id="board" class="board">
+				<script>
+					let board = document.getElementById("board");
+					for(let i = 1; i < 82; i++) {
+						const cell = document.createElement('button');
+						cell.className = "cell";
+						cell.id = "cell-" + i;
+						cell.textContent = "";
+						board.appendChild(cell);
+					}
+				</script>
+			</div>
 
+			<div id="number-pad" class="number-pad">
+				<script>
+					let numberPad = document.getElementById("number-pad");
+
+					for(let i = 0; i < 10; ++i) {
+						const cell = document.createElement('button');
+						cell.className = "number-pad-cell";
+						cell.id = "number-pad-cell-" + i;
+						cell.textContent = "" + i;
+						numberPad.appendChild(cell);
+					}
+				</script>
+			</div>
+
+			<div class="difficulty-component">
+				<div class="difficulty-header">
+					<p>Choose your difficulty:</p>
+				</div>
+				<div class="difficulty-select">
+					<button>Easy</button>
+					<button>Medium</button>
+					<button>Hard</button>
+				</div>
+			</div>
+		</div>
 	</body>
+
+	
 </html>
