@@ -12,43 +12,37 @@
 
 		<div class="game">
 			<div id="board" class="board">
-				<script>
+				<!-- <script>
 					let board = document.getElementById("board");
 					for(let i = 1; i < 82; i++) {
 						const cell = document.createElement('button');
+						cell.setAttribute("index", "" + i);
 						cell.className = "cell";
 						cell.id = "cell-" + i;
 						cell.textContent = "";
 						board.appendChild(cell);
 					}
-				</script>
+				</script> -->
 			</div>
 
 			<div id="number-pad" class="number-pad">
-				<script>
+				<!-- <script>
 					let numberPad = document.getElementById("number-pad");
 
 					for(let i = 0; i < 10; ++i) {
 						const cell = document.createElement('button');
+						cell.setAttribute("index", "" + i);
 						cell.className = "number-pad-cell";
 						cell.id = "number-pad-cell-" + i;
 						cell.textContent = "" + i;
 						numberPad.appendChild(cell);
 					}
-				</script>
+				</script> -->
 			</div>
 
-			<div class="difficulty-component">
-				<div class="difficulty-header">
-					<p>Choose your difficulty:</p>
-				</div>
-				<div class="difficulty-select">
-					<button>Easy</button>
-					<button>Medium</button>
-					<button>Hard</button>
-				</div>
-			</div>
+			<p id="display">Good Luck!</p>
 		</div>
+		<button id="try-again" onclick="restartGame()">Restart Game</button>
 	</body>
 
 	

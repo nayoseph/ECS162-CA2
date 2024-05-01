@@ -1,3 +1,7 @@
+body {
+	background-color: rgb(210, 161, 161);
+}
+
 :root {
 	--button_color: rgb(199, 199, 199);
 	--button_hover_color: rgb(171, 171, 171);
@@ -13,7 +17,7 @@
 	align-items: center;
 	display: grid;
 	grid-template-columns: repeat(9, 1fr);
-	padding: auto;
+	margin: auto;
 }
 
 .cell {
@@ -30,6 +34,7 @@
 
 .number-pad {
 	max-width: 150px;
+	max-height: 200px;
 	display: grid;
 	align-items: center;
 	grid-template-columns: repeat(3, 1fr);
@@ -42,10 +47,19 @@
 	display: flex;
 	width: 50px;
 	height: 50px;
-	padding: 25px;
 	border: 2px solid black;
 	cursor: pointer;
 	background-color: var(--button_color);
+}
+
+.number-pad-cell:hover {
+	background-color: var(--button_hover_color);
+}
+
+.game {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .cell:hover {
