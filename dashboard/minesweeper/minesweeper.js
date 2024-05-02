@@ -68,6 +68,7 @@ function changeDifficulty(selectObject) {
         cols = 24;
         numMines = 99;
     }
+    // Restart game every time user changes difficulty
     startGame();
 }
 
@@ -184,7 +185,7 @@ function openTile(r, c) {
     if (minesFound > 0) {
         // At least 1 mine adjacent to tile => display the number of mines surrounding it
         board[r][c].innerText = minesFound;
-        board[r][c].classList.add("x" + minesFound.toString());
+        board[r][c].classList.add("tile" + minesFound.toString());
     }
     else {
         // 0 mines adjacent to tile => blank tile (no text)
