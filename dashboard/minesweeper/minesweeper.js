@@ -1,12 +1,12 @@
 let board = [];
 let rows = 8;
-let cols = 8;
+let cols = 10;
 
-let numMines = 5;
+let numMines = 10;
 let numMinesFlagged = 0;
-let minesCoords = [];  // FIXME
+let minesCoords = [];
 let flagIcon = "flag";
-let bombIcon = "bomb";
+let mineIcon = "mine";
 
 let numOpenedTiles = 0;
 
@@ -16,30 +16,73 @@ window.onload = function() {
     startGame();
 }
 
-function startGame() {
-    document.getElementById("mines-count").innerText = numMines;
-    setMines();
+/* FIXME: add lose/win screens + reset button */
+
+function resetVars() {
+    gameOver = false;
+    board = [];
+    numMinesFlagged = 0;
+    minesCoords = [];
+    numOpenedTiles = 0;
+}
+
+function displayBoard() {
+    let display = document.getElementById("board")
+    display.innerHTML = "";
+
+    let height = 50 * rows;
+    let width = 50 * cols;
+
+    document.getElementById("board").style.height = height.toString() + "px";
+    document.getElementById("board").style.width = width.toString() + "px";
 
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < cols; c++) {
             let tile = document.createElement("div");
+            tile.className = "tile";
             tile.id = r.toString() + "-" + c.toString();
-            tile.addEventListener("click", openTile);
+            tile.addEventListener("click", clickTile);
             tile.addEventListener("contextmenu", flagTile);
-            document.getElementById("board").append(tile);
+            display.append(tile);
             row.push(tile);
         }
         board.push(row);
     }
+}
 
-    console.log(board);
+function changeDifficulty(selectObject) {
+    let difficulty = selectObject.value;
+    // console.log(difficulty);
+
+    if (difficulty === "easy") {
+        rows = 8;
+        cols = 10;
+        numMines = 10;
+    } else if (difficulty === "medium") {
+        rows = 14;
+        cols = 18;
+        numMines = 40;
+    } else if (difficulty === "hard") {
+        rows = 20;
+        cols = 24;
+        numMines = 99;
+    }
+    startGame();
+}
+
+function startGame() {
+    resetVars();
+    displayBoard();
+    document.getElementById("mines-count").innerText = numMines;
+    setMines();
+
+    console.log(board);  // FIXME
 }
 
 function setMines() {
     let minesPos = [];
 
-    /* FIXME: generate numbers 1 to minesLeft, index like C arrays -- r = rows * cols / num, c = rows * cols % num?*/
     for (let i = 0; i < numMines; i++) {
         let mine = Math.floor(Math.random() * rows * cols);
 
@@ -58,7 +101,8 @@ function setMines() {
     }
 }
 
-function openTile() {
+function clickTile(event) {
+    event.preventDefault();
     if (gameOver || this.classList.contains("opened-tile")) {
         return;
     }
@@ -79,7 +123,7 @@ function openTile() {
     let coords = tile.id.split("-"); 
     let r = parseInt(coords[0]);
     let c = parseInt(coords[1]);
-    checkMine(r, c);
+    openTile(r, c);
 }
 
 /* Triggered upon right click (contextmenu event) */
@@ -108,17 +152,18 @@ function flagTile(event) {
 
 function revealMines() {
     for (let i = 0; i < minesCoords.length; i++) {
-        let coords = tile.id.split("-"); 
+        let mine = minesCoords[i];
+        let coords = mine.split("-"); 
         let r = parseInt(coords[0]);
         let c = parseInt(coords[1]);
-
         let tile = board[r][c];
-        tile.innerText = bombIcon;
+
+        tile.innerText = mineIcon;
         tile.style.backgroundColor = "red";
     }
 }
 
-function checkMine(r, c) {
+function openTile(r, c) {
     if (r < 0 || r >= rows || c < 0 || c >= cols) {
         // Check if out of bounds
         return;
@@ -152,7 +197,7 @@ function checkMine(r, c) {
                     // Skip the tile itself
                     continue;
                 }
-                checkMine(i, j);
+                openTile(i, j);
             }
         }
     }
