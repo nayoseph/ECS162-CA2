@@ -1,5 +1,19 @@
 body {
 	background-color: rgb(210, 161, 161);
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.title {
+	font-size: 20px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.display-container {
+	max-width: 60px;
+	gap: 50px;
+	margin: auto;
 }
 
 :root {
@@ -9,6 +23,8 @@ body {
 
 .game {
 	display: flex;
+	margin: 70px;
+	gap: 100px;
 }
 
 .board {
