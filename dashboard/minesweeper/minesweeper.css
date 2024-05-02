@@ -22,3 +22,23 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.opened-tile {
+    background-color: darkgrey;
+}
+
+.x1 {
+    color: blue;
+}
+
+.x2 {
+    color: green;
+}
+
+.x3 {
+    color: red;
+}
+
+.x4 {
+    color: purple;
+}
