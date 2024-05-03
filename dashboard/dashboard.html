@@ -4,16 +4,47 @@
         <title>Nahom and Ann's Arcade</title>
         <link rel="stylesheet" href="dashboard.css">
         <script src="dashboard.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
 
     <body>
-        <h1>Welcome To Our Arcade!</h1> <br>
-        <ul>
-            <li><a href="coinToss/cointoss.html">Coin Toss</a></li>
-            <li><a href="../tictactoeExample/tictactoe.html">TicTacToe (example)</a></li>
-            <li><a href="minesweeper/minesweeper.html">Minesweeper</a></li>
-            <li><a href="sudoku/sudoku.html">Sudoku</a></li>
-            <li><a href="tetris/tetris.html">Tetris</a></li>
-        </ul>
+        <header>
+            <p class="title">Nahom & Ann's Arcade</p>
+        </header>
+
+        <div class="games-container">
+            <a href="minesweeper/minesweeper.html">
+                <div class="game-container">
+                    <img class="game-img" src="../images/minesweeper.webp" title="Minesweeper" alt="Numbered tiles placed in a grid, with many similar grids in the background">
+                    <p class="game-description">Minesweeper: Avoid the mines and clear the field. Dare to sweep?</p>
+                </div>
+            </a>
+            
+            <a href="coinToss/cointoss.html">
+                <div class="game-container">
+                    <img class="game-img" src="../images/coin-toss-image.webp" title="Coin Toss" alt="Sunbeams highlight a coin split down the middle, with two different faces occupying each half">
+                    <p class="game-description">Coin Toss Sim: Test your luck with a flip! Ready to toss?</p>
+                </div>
+            </a>
+
+            <a href="sudoku/sudoku.html">
+                <div class="game-container">
+                    <img class="game-img" src="../images/sudoku-image.webp" title="Sudoku" alt="Hand holding a magnifying glass over a sudoku board">
+                    <p class="game-description">Sudoku: Challenge your mind with numbers. Start puzzling now!</p>
+                </div>
+            </a>
+
+            <a href="tetris/tetris.html">
+                <div class="game-container">
+                    <img class="game-img" src="../images/tetris.webp" title="Tetris" alt="Falling blocks in a tetris game configuration">
+                    <p class="game-description">Experience the timeless block-arranging puzzle gameplay. Play now!</p>
+                </div>
+            </a>
+        </div>
+
+        <footer>
+            <p>Copyright &copy; 2024 Nahom & Ann's Arcade</p>
+            <p>Palacios, A. (2024) Tetris <a href="https://github.com/AlexSp3/Speed-Coding-Games-in-JavaScript">[Source code]</a>.</p>
+        </footer>
     </body>
 </html>

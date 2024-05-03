@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Nahom's Sudoku Game</title>
+		<title>Sudoku</title>
 		<link rel="stylesheet" href="./sudoku.css">
 		<script src="./sudoku.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 
 	<body>
-		<h1 id="title">Nahom's Sudoku Game</h1>
-		<p><a href="../dashboard.html">Return to dashboard.</a></p>
-
+		<header>
+            <p>Sudoku</p>
+        </header>
+		<p style="max-width:400px;">Select a number on the right-side keypad before placing a number on the board. To remove a number from the board, click on the number.</p>
 		<div class="game">
 			<div id="board" class="board"></div>
 
-			<div id="number-pad" class="number-pad"></div>
+			<div class="number-pad-container">
+				<p id="selected-num"></p>
+				<div id="number-pad" class="number-pad"></div>
+			</div>
 		</div>
+
 		<div class="display-container">
 			<p id="display">Good Luck!</p>
 		</div>
-		<button id="try-again" onclick="restartGame()">Restart Game</button>
+		<button id="try-again" class="button" onclick="restartGame()">Restart Game</button>
+		<a href="../dashboard.html"><button class="button">Return To Dashboard</button></a>
+        <footer>
+            <p>Copyright &copy; 2024 Nahom & Ann's Arcade</p>
+        </footer>
 	</body>
 
 	

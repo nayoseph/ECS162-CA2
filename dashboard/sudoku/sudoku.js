@@ -4,22 +4,6 @@ let selectedBoardIndex = null;
 
 const boardCells = document.querySelectorAll('.cell');
 const keyPadCells = document.querySelectorAll('.number-pad-cell');
-let sudokuBoard = [
-	[5, 3, 4, 6, 7, 8, 9, 1, 2],
-	[6, 7, 2, 1, 9, 5, 3, 4, 8],
-	[1, 9, 8, 3, 4, 2, 5, 6, 7],
-	[8, 5, 9, 7, 6, 1, 4, 2, 3],
-	[4, 2, 6, 8, 5, 3, 7, 9, 1],
-	[7, 1, 3, 9, 2, 4, 8, 5, 6],
-	[9, 6, 1, 5, 3, 7, 2, 8, 4],
-	[2, 8, 7, 4, 1, 9, 6, 3, 5],
-	[3, 4, 5, 2, 8, 6, 1, 7, 9]
-  ];
-  
-// Flatten the 2D array into a 1D array
-let solvedSudoku = sudokuBoard.flat();
-
-remove35(solvedSudoku);
 
 function isGameOver() {
 	for (let i = 1; i <= 81; ++i) {
@@ -55,8 +39,8 @@ function loadBoard(board) {
 
 document.addEventListener('DOMContentLoaded', () => {
     createBoard();
-	loadBoard(solvedSudoku);
     createNumberPad();
+	restartGame();
     attachEventListeners();
 });
 
@@ -127,6 +111,7 @@ function handleBoardCellClick(boardCellClickEvent) {
 
 	selectedKeyIndex = null;
 	selectedBoardIndex = null;
+	document.getElementById('selected-num').textContent = "";
 }
 
 function valid3by3Section(boardCellIndex, keyIndex) {
@@ -149,10 +134,12 @@ function valid3by3Section(boardCellIndex, keyIndex) {
 
 function validColumn(boardCellIndex, keyIndex) {
 	// TODO: FIX
-	let startIndex = boardCellIndex % 9;
+	let startIndex = ((boardCellIndex - 1) % 9) + 1;
 	let displayText = document.getElementById('display');
 
 	for(let i = startIndex; i <= 81; i += 9) {
+		console.log(boardCellIndex);
+		console.log(i);
 		if(parseInt(document.getElementById('cell-' + i).textContent) == keyIndex) {
 			displayText.textContent = "You can't have multiple of the same number in a column";
 			return false;
@@ -162,17 +149,15 @@ function validColumn(boardCellIndex, keyIndex) {
 }
 
 function validRow(boardCellIndex, keyIndex) {
-	// TODO: FIX
 	let startIndex = Math.floor(boardCellIndex / 9) * 9;
 	let displayText = document.getElementById('display');
 
-	for(let i = 1; i <= 8; ++i) {
+	for(let i = 1; i <= 9; ++i) {
 		if(parseInt(document.getElementById('cell-' + (i + startIndex)).textContent) == keyIndex) {
 			displayText.textContent = "You can't have multiple of the same number in a row";
 			return false;
 		}
 	}
-
 	return true;
 }
 
@@ -184,11 +169,28 @@ function handleNumberPadCellClick(padCellClickEvent) {
 	const clickedKeyPadCell = padCellClickEvent.target;
     const clickedKeyPadIndex = parseInt(clickedKeyPadCell.getAttribute('index'));
 	selectedKeyIndex = clickedKeyPadIndex;
+	document.getElementById('selected-num').textContent = "Selected number: " + selectedKeyIndex;
 	console.log(selectedKeyIndex)
 	return;
 }
 
 function restartGame() {
+	sudokuBoard = [
+		[5, 3, 4, 6, 7, 8, 9, 1, 2],
+		[6, 7, 2, 1, 9, 5, 3, 4, 8],
+		[1, 9, 8, 3, 4, 2, 5, 6, 7],
+		[8, 5, 9, 7, 6, 1, 4, 2, 3],
+		[4, 2, 6, 8, 5, 3, 7, 9, 1],
+		[7, 1, 3, 9, 2, 4, 8, 5, 6],
+		[9, 6, 1, 5, 3, 7, 2, 8, 4],
+		[2, 8, 7, 4, 1, 9, 6, 3, 5],
+		[3, 4, 5, 2, 8, 6, 1, 7, 9]
+	  ];
+	  
+	// Flatten the 2D array into a 1D array
+	let solvedSudoku = sudokuBoard.flat();
+	
+	remove35(solvedSudoku);
 	clearBoard();
 	loadBoard(solvedSudoku);
 	gameActive = true;

@@ -1,7 +1,6 @@
 let board = [];
 let rows = 8;
 let cols = 10;
-
 let numMines = 10;
 let numMinesFlagged = 0;
 let minesCoords = [];
@@ -16,7 +15,7 @@ window.onload = function() {
     startGame();
 }
 
-/* FIXME: add lose/win screens + reset button */
+/* FIXME: add lose/win screens */
 
 function resetVars() {
     gameOver = false;
@@ -27,6 +26,7 @@ function resetVars() {
 }
 
 function displayBoard() {
+    /* Draw the board using the tiles and size of board (dependent on difficulty level) */
     let display = document.getElementById("board")
     display.innerHTML = "";
 
@@ -51,9 +51,12 @@ function displayBoard() {
     }
 }
 
+function displayNumMines() {
+    document.getElementById("num-mines").innerText = numMines;
+}
+
 function changeDifficulty(selectObject) {
     let difficulty = selectObject.value;
-    // console.log(difficulty);
 
     if (difficulty === "easy") {
         rows = 8;
@@ -75,10 +78,19 @@ function changeDifficulty(selectObject) {
 function startGame() {
     resetVars();
     displayBoard();
-    document.getElementById("mines-count").innerText = numMines;
+    displayNumMines();
     setMines();
+}
 
-    console.log(board);  // FIXME
+function winGame() {
+    gameOver = true;
+    alert("You won! Play again?");
+}
+
+function loseGame() {
+    gameOver = true;
+    revealMines();
+    alert("You lost! Play again?");
 }
 
 function setMines() {
@@ -104,11 +116,13 @@ function setMines() {
 
 function clickTile(event) {
     event.preventDefault();
+    let tile = this;
+
     if (gameOver || this.classList.contains("opened-tile")) {
         return;
     }
 
-    let tile = this;
+    
 
     if (tile.innerText == flagIcon) {
         // Do not allow tile to be revealed if it is flagged
@@ -116,8 +130,7 @@ function clickTile(event) {
     }
 
     if (minesCoords.includes(tile.id)) {
-        gameOver = true;
-        revealMines();
+        loseGame();
         return;
     }
 
@@ -147,7 +160,7 @@ function flagTile(event) {
         numMinesFlagged++;
     }
     // Update number of mines remaining unflagged
-    document.getElementById("mines-count").innerText = Math.max(0, numMines - numMinesFlagged);
+    document.getElementById("num-mines").innerText = Math.max(0, numMines - numMinesFlagged);
 }
 
 
@@ -205,8 +218,8 @@ function openTile(r, c) {
 
     /* FIXME: and add animation for game over? */
     if (numOpenedTiles == rows * cols - numMines) {
-        document.getElementById("mines-count").innerText = "Cleared";
-        gameOver = true;
+        // document.getElementById("num-mines").innerText = "Cleared";
+        winGame();
     }
 }
 
