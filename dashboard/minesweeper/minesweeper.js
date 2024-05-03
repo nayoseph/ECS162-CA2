@@ -5,8 +5,8 @@ let cols = 10;
 let numMines = 10;
 let numMinesFlagged = 0;
 let minesCoords = [];
-let flagIcon = "flag";
-let mineIcon = "mine";
+let flagIcon = String.fromCodePoint(0x1F6A9);
+let mineIcon = String.fromCodePoint(0x1F4A3);
 
 let numOpenedTiles = 0;
 
