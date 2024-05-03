@@ -191,10 +191,9 @@ window.onload = () => {
                 } else {
                     // Check if player has lost
                     if (FIELD[MIN_VALID_ROW - 1].some(block => block !== false)) {
-                        // Popup with losing message
-                        alert("You have lost!");
-                        // Reset the game after some time even if user has not clicked "OK" on the alert popup
-                        reset();
+                        // alert("You have lost!");
+                        playAgain();
+                        // // reset();
                     }
                 }
 
@@ -220,6 +219,12 @@ window.onload = () => {
         }
 
         setTimeout(draw, delay);
+    }
+
+    function playAgain() {
+        if (confirm("You have lost! Play again?")) {
+            reset();
+        } 
     }
 
     /* Keyboard inputs */

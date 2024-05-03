@@ -89,19 +89,14 @@ function startGame() {
 /* Called when game is won (all tiles clicked/mines correctly flagged) */
 function winGame() {
     gameOver = true;
-    setTimeout(function() {
-        alert("You won! Play again?");
-    }, 1000);
+    document.getElementById("num-mines").innerText = "You won! Play again?";
 }
 
 /* Called when game is lost (clicked on a mine) */
 function loseGame() {
     gameOver = true;
     revealMines();
-    setTimeout(function() {
-        alert("You lost! Play again?");
-    }, 1000); 
-    
+    document.getElementById("num-mines").innerText = "You lost! Play again?";
 }
 
 /* Generate all mine placements on the board */
@@ -148,7 +143,9 @@ function clickTile(event) {
     }
 
     // Open the tile
-    let [r, c] = getTileCoords(tile);
+    let [r, c] = tile.id.split("-"); 
+    r = parseInt(r);
+    c = parseInt(c);
     openTile(r, c);
 }
 
@@ -179,7 +176,9 @@ function flagTile(event) {
 function revealMines() {
     for (let i = 0; i < minesCoords.length; i++) {
         let mine = minesCoords[i];
-        let [r, c] = getTileCoords(mine);
+        let [r, c] = mine.split("-"); 
+        r = parseInt(r);
+        c = parseInt(c);
         let tile = board[r][c];
 
         tile.innerText = mineIcon;
@@ -265,9 +264,9 @@ function isTileOutOfBounds(r, c) {
 }
 
 /* Parse the tile's coordinates (string: r-c) and returns them as an int array ([r, c])*/
-function getTileCoords(tile) {
-    let [r, c] = tile.id.split("-"); 
-    r = parseInt(r);
-    c = parseInt(c);
-    return [r, c];
-}
+// function getTileCoords(tile) {
+//     let [r, c] = tile.id.split("-"); 
+//     r = parseInt(r);
+//     c = parseInt(c);
+//     return [r, c];
+// }
