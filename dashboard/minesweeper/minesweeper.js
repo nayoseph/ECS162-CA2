@@ -84,13 +84,18 @@ function startGame() {
 
 function winGame() {
     gameOver = true;
-    alert("You won! Play again?");
+    setTimeout(function() {
+        alert("You won! Play again?");
+    }, 1000);
 }
 
 function loseGame() {
     gameOver = true;
     revealMines();
-    alert("You lost! Play again?");
+    setTimeout(function() {
+        alert("You lost! Play again?");
+    }, 1000); 
+    
 }
 
 function setMines() {
@@ -100,7 +105,7 @@ function setMines() {
         let mine = Math.floor(Math.random() * rows * cols);
 
         while (minesPos.includes(mine)) {
-            mine = Math.floor(Math.random() * rows * cols)
+            mine = Math.floor(Math.random() * rows * cols);
         }
 
         minesPos.push(mine);
@@ -134,9 +139,10 @@ function clickTile(event) {
         return;
     }
 
-    let coords = tile.id.split("-"); 
-    let r = parseInt(coords[0]);
-    let c = parseInt(coords[1]);
+    // let [r, c] = tile.id.split("-"); 
+    // r = parseInt(r);
+    // c = parseInt(c);
+    let [r, c] = getTileCoords(tile);
     openTile(r, c);
 }
 
@@ -167,9 +173,10 @@ function flagTile(event) {
 function revealMines() {
     for (let i = 0; i < minesCoords.length; i++) {
         let mine = minesCoords[i];
-        let coords = mine.split("-"); 
-        let r = parseInt(coords[0]);
-        let c = parseInt(coords[1]);
+        // let [r, c] = mine.split("-"); 
+        // r = parseInt(r);
+        // c = parseInt(c);
+        let [r, c] = getTileCoords(mine);
         let tile = board[r][c];
 
         tile.innerText = mineIcon;
@@ -178,7 +185,7 @@ function revealMines() {
 }
 
 function openTile(r, c) {
-    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+    if (isTileOutOfBounds(r, c)) {
         // Check if out of bounds
         return;
     }
@@ -218,7 +225,6 @@ function openTile(r, c) {
 
     /* FIXME: and add animation for game over? */
     if (numOpenedTiles == rows * cols - numMines) {
-        // document.getElementById("num-mines").innerText = "Cleared";
         winGame();
     }
 }
@@ -240,9 +246,20 @@ function countMinesAroundTile(r, c) {
 }
 
 function isTileAMine(r, c) {
-    if (r < 0 || r >= rows || c < 0 || c >= cols) {
-        // Check if out of bounds
+    if (isTileOutOfBounds(r, c)) {
+        // Out-of-bounds "tiles" are not mines
         return 0;
     }
     return minesCoords.includes(r.toString() + "-" + c.toString());
+}
+
+function isTileOutOfBounds(r, c) {
+    return r < 0 || r >= rows || c < 0 || c >= cols;
+}
+
+function getTileCoords(tile) {
+    let [r, c] = tile.id.split("-"); 
+    r = parseInt(r);
+    c = parseInt(c);
+    return [r, c];
 }
