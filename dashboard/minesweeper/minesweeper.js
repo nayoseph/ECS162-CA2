@@ -15,7 +15,6 @@ window.onload = function() {
     startGame();
 }
 
-/* FIXME: add lose/win screens */
 
 function resetVars() {
     gameOver = false;
@@ -216,7 +215,6 @@ function openTile(r, c) {
         }
     }
 
-    /* FIXME: and add animation for game over? */
     if (numOpenedTiles == rows * cols - numMines) {
         // document.getElementById("num-mines").innerText = "Cleared";
         winGame();

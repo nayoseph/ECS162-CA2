@@ -1,3 +1,4 @@
+// Flips for a random number between 0 and 1, prints respective heads/tails outcome
 function flipCoin() {
     let coin = Math.floor(Math.random() * 2);
 

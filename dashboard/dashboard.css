@@ -51,8 +51,8 @@ a {
 }
 
 .game-container:hover {
-    transform: scale(1.1); /* Enlarges the container by 10% */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Simulates lifting off the screen */
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .game-img {

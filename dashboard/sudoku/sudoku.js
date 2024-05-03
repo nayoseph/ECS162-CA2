@@ -1,3 +1,4 @@
+// Globals, used to track game status and the board/keypad tiles & info
 let gameActive = true;
 let selectedKeyIndex = null;
 let selectedBoardIndex = null;
@@ -5,6 +6,7 @@ let selectedBoardIndex = null;
 const boardCells = document.querySelectorAll('.cell');
 const keyPadCells = document.querySelectorAll('.number-pad-cell');
 
+// Checks if the game is over (grid is full)
 function isGameOver() {
 	for (let i = 1; i <= 81; ++i) {
 		let cell = document.getElementById("cell-"+i);
@@ -15,6 +17,7 @@ function isGameOver() {
 	return true;
 }
 
+// Randomly removes 35 elements from a solved board
 function remove35(board) {
 	let count = 0;
 	while(count < 35) {
@@ -26,6 +29,7 @@ function remove35(board) {
 	}
 }
 
+// Iterates through cells of the sudoku board in HTML and populates it accordingly
 function loadBoard(board) {
 	for(let i = 1; i <= 81; ++i) {
 		if(board[i - 1] == "") {
@@ -37,6 +41,7 @@ function loadBoard(board) {
 	}
 }
 
+// Functions run when page is loaded (create board & keypad, initializes the game and attaches event listeners)
 document.addEventListener('DOMContentLoaded', () => {
     createBoard();
     createNumberPad();
@@ -44,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     attachEventListeners();
 });
 
+// Creates the HTML sudoku board object
 function createBoard() {
     let board = document.getElementById("board");
     for(let i = 1; i <= 81; i++) {
@@ -56,6 +62,7 @@ function createBoard() {
     }
 }
 
+// Creates and loads the keypad HTML object
 function createNumberPad() {
     let numberPad = document.getElementById("number-pad");
     for(let i = 1; i <= 9; ++i) {
@@ -68,6 +75,7 @@ function createNumberPad() {
     }
 }
 
+// Attaches clicking event listeners to the sudoku board & keypad
 function attachEventListeners() {
     const boardCells = document.querySelectorAll('.cell');
     const keyPadCells = document.querySelectorAll('.number-pad-cell');
@@ -80,13 +88,12 @@ function attachEventListeners() {
     });
 }
 
+// Handler for when a cell within the sudoku board is clicked, handles validation for user's move and executes it
 function handleBoardCellClick(boardCellClickEvent) {
 	if(!gameActive) {
 		return;
 	}
-	console.log("board click");
 	const clickedBoardCell = boardCellClickEvent.target;
-	console.log(clickedBoardCell);
     const clickedCellIndex = parseInt(clickedBoardCell.getAttribute('index'));
 	const displayText = document.getElementById('display');
 
@@ -114,15 +121,15 @@ function handleBoardCellClick(boardCellClickEvent) {
 	document.getElementById('selected-num').textContent = "";
 }
 
+// Ensures the user does not place a duplicate number in any one of the 9 3x3 grids
 function valid3by3Section(boardCellIndex, keyIndex) {
 	let startRowIndex = Math.floor(Math.floor(boardCellIndex / 9) / 3) * 3;
 	let startColIndex = Math.floor(((boardCellIndex - 1) % 9) / 3) * 3;
 	const displayText = document.getElementById('display');
 
-	for(let i = 0; i < 3; ++i) {
-		for(let j = 0; j < 3; ++j) {
-			let ind = (startRowIndex + i) * 9 + (startColIndex + j) + 1;
-			console.log(ind);
+	for(let row = 0; row < 3; ++row) {
+		for(let col = 0; col < 3; ++col) {
+			let ind = (startRowIndex + row) * 9 + (startColIndex + col) + 1;
 			if(parseInt(document.getElementById('cell-' + ind).textContent) == keyIndex) {
 				displayText.textContent = "You can't have multiple of the same number in a 3x3 block";
 				return false;
@@ -132,15 +139,13 @@ function valid3by3Section(boardCellIndex, keyIndex) {
 	return true;
 }
 
+// Ensures the number the user places is unique in it's respective column
 function validColumn(boardCellIndex, keyIndex) {
-	// TODO: FIX
 	let startIndex = ((boardCellIndex - 1) % 9) + 1;
 	let displayText = document.getElementById('display');
 
-	for(let i = startIndex; i <= 81; i += 9) {
-		console.log(boardCellIndex);
-		console.log(i);
-		if(parseInt(document.getElementById('cell-' + i).textContent) == keyIndex) {
+	for(let cell = startIndex; cell <= 81; cell += 9) {
+		if(parseInt(document.getElementById('cell-' + cell).textContent) == keyIndex) {
 			displayText.textContent = "You can't have multiple of the same number in a column";
 			return false;
 		}
@@ -148,11 +153,12 @@ function validColumn(boardCellIndex, keyIndex) {
 	return true;
 }
 
+// Ensures the number the user places is unique in it's respective row
 function validRow(boardCellIndex, keyIndex) {
 	let startIndex = Math.floor(boardCellIndex / 9) * 9;
 	let displayText = document.getElementById('display');
 
-	for(let i = 1; i <= 9; ++i) {
+	for(let cell = 1; cell <= 9; ++i) {
 		if(parseInt(document.getElementById('cell-' + (i + startIndex)).textContent) == keyIndex) {
 			displayText.textContent = "You can't have multiple of the same number in a row";
 			return false;
@@ -161,19 +167,19 @@ function validRow(boardCellIndex, keyIndex) {
 	return true;
 }
 
+// Handler for when user selects a number from the keypad, stores the selected number
 function handleNumberPadCellClick(padCellClickEvent) {
 	if(!gameActive) {
 		return;
 	}
-	console.log("pad click");
 	const clickedKeyPadCell = padCellClickEvent.target;
     const clickedKeyPadIndex = parseInt(clickedKeyPadCell.getAttribute('index'));
 	selectedKeyIndex = clickedKeyPadIndex;
 	document.getElementById('selected-num').textContent = "Selected number: " + selectedKeyIndex;
-	console.log(selectedKeyIndex)
 	return;
 }
 
+// Restarts the game by clearing and reloading the board, as well as re-initializing globals
 function restartGame() {
 	sudokuBoard = [
 		[5, 3, 4, 6, 7, 8, 9, 1, 2],
@@ -186,8 +192,6 @@ function restartGame() {
 		[2, 8, 7, 4, 1, 9, 6, 3, 5],
 		[3, 4, 5, 2, 8, 6, 1, 7, 9]
 	  ];
-	  
-	// Flatten the 2D array into a 1D array
 	let solvedSudoku = sudokuBoard.flat();
 	
 	remove35(solvedSudoku);
@@ -196,16 +200,15 @@ function restartGame() {
 	gameActive = true;
 	selectedBoardIndex = null;
 	selectedKeyIndex = null;
-	console.log("game restarted");
 	let displayText = document.getElementById('display');
 
 	displayText.textContent = "Good Luck!";
 }
 
+// Clears the board by emptying text content of each of the sudoku board's cells
 function clearBoard() {
 	for (let i = 1; i < 82; ++i) {
 		let cell = document.getElementById("cell-"+i);
 		cell.textContent = "";
 	}
-	console.log("board cleared");
 }
