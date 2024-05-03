@@ -11,11 +11,12 @@ let numOpenedTiles = 0;
 
 let gameOver = false;
 
+/* Start a new game on easy (default) difficulty upon first load-in */
 window.onload = function() {
     startGame();
 }
 
-
+/* Reset board/mines/other variables -- used for restarting game */
 function resetVars() {
     gameOver = false;
     board = [];
@@ -24,6 +25,7 @@ function resetVars() {
     numOpenedTiles = 0;
 }
 
+/* Dynamically create all the tile and draw the board */
 function displayBoard() {
     /* Draw the board using the tiles and size of board (dependent on difficulty level) */
     let display = document.getElementById("board")
@@ -50,10 +52,12 @@ function displayBoard() {
     }
 }
 
+/* Display the total number of mines on the board */
 function displayNumMines() {
     document.getElementById("num-mines").innerText = numMines;
 }
 
+/* Change the difficulty level of the game (easy, medium, or hard) */
 function changeDifficulty(selectObject) {
     let difficulty = selectObject.value;
 
@@ -74,6 +78,7 @@ function changeDifficulty(selectObject) {
     startGame();
 }
 
+/* Start game: reset the vars/board, display the new board and the total number of mines, and generate all mine placements */
 function startGame() {
     resetVars();
     displayBoard();
@@ -81,17 +86,25 @@ function startGame() {
     setMines();
 }
 
+/* Called when game is won (all tiles clicked/mines correctly flagged) */
 function winGame() {
     gameOver = true;
-    alert("You won! Play again?");
+    setTimeout(function() {
+        alert("You won! Play again?");
+    }, 1000);
 }
 
+/* Called when game is lost (clicked on a mine) */
 function loseGame() {
     gameOver = true;
     revealMines();
-    alert("You lost! Play again?");
+    setTimeout(function() {
+        alert("You lost! Play again?");
+    }, 1000); 
+    
 }
 
+/* Generate all mine placements on the board */
 function setMines() {
     let minesPos = [];
 
@@ -99,7 +112,7 @@ function setMines() {
         let mine = Math.floor(Math.random() * rows * cols);
 
         while (minesPos.includes(mine)) {
-            mine = Math.floor(Math.random() * rows * cols)
+            mine = Math.floor(Math.random() * rows * cols);
         }
 
         minesPos.push(mine);
@@ -113,15 +126,15 @@ function setMines() {
     }
 }
 
+/* Handles clicking on a tile */
 function clickTile(event) {
     event.preventDefault();
     let tile = this;
 
     if (gameOver || this.classList.contains("opened-tile")) {
+        // Do nothing if game is already over or user clicked on a tile that is already open
         return;
     }
-
-    
 
     if (tile.innerText == flagIcon) {
         // Do not allow tile to be revealed if it is flagged
@@ -129,17 +142,17 @@ function clickTile(event) {
     }
 
     if (minesCoords.includes(tile.id)) {
+        // User clicked on a mine
         loseGame();
         return;
     }
 
-    let coords = tile.id.split("-"); 
-    let r = parseInt(coords[0]);
-    let c = parseInt(coords[1]);
+    // Open the tile
+    let [r, c] = getTileCoords(tile);
     openTile(r, c);
 }
 
-/* Triggered upon right click (contextmenu event) */
+/* Handles right click on tile (contextmenu event) */
 function flagTile(event) {
     // Disable default context menu popup
     event.preventDefault();
@@ -162,13 +175,11 @@ function flagTile(event) {
     document.getElementById("num-mines").innerText = Math.max(0, numMines - numMinesFlagged);
 }
 
-
+/* Display the locations of all the mines on the board (called when game is lost, i.e. user clicks on one mine) */
 function revealMines() {
     for (let i = 0; i < minesCoords.length; i++) {
         let mine = minesCoords[i];
-        let coords = mine.split("-"); 
-        let r = parseInt(coords[0]);
-        let c = parseInt(coords[1]);
+        let [r, c] = getTileCoords(mine);
         let tile = board[r][c];
 
         tile.innerText = mineIcon;
@@ -176,8 +187,9 @@ function revealMines() {
     }
 }
 
+/* Opens a tile, and all nearby tiles with 0 mines near them */
 function openTile(r, c) {
-    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+    if (isTileOutOfBounds(r, c)) {
         // Check if out of bounds
         return;
     }
@@ -216,11 +228,12 @@ function openTile(r, c) {
     }
 
     if (numOpenedTiles == rows * cols - numMines) {
-        // document.getElementById("num-mines").innerText = "Cleared";
+        // Game is won when user has clicked on all tiles that are not mines
         winGame();
     }
 }
 
+/* Count the number of mines around a given tile */
 function countMinesAroundTile(r, c) {
     let numMines = 0;
 
@@ -237,10 +250,24 @@ function countMinesAroundTile(r, c) {
     return numMines;
 }
 
+/* Returns 0 if the tile is not a mine, 1 if it is */
 function isTileAMine(r, c) {
-    if (r < 0 || r >= rows || c < 0 || c >= cols) {
-        // Check if out of bounds
+    if (isTileOutOfBounds(r, c)) {
+        // Out-of-bounds "tiles" are not mines
         return 0;
     }
     return minesCoords.includes(r.toString() + "-" + c.toString());
+}
+
+/* Returns 0 if tile is not out of bounds, 1 if it is */
+function isTileOutOfBounds(r, c) {
+    return r < 0 || r >= rows || c < 0 || c >= cols;
+}
+
+/* Parse the tile's coordinates (string: r-c) and returns them as an int array ([r, c])*/
+function getTileCoords(tile) {
+    let [r, c] = tile.id.split("-"); 
+    r = parseInt(r);
+    c = parseInt(c);
+    return [r, c];
 }

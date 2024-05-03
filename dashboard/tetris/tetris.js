@@ -8,8 +8,8 @@ window.onload = () => {
 
     class Tetromino {
         static COLORS = ["blue", "green", "yellow", "red", "orange", "light-blue", "purple"];  // Block colors
-        static BLOCK_SIZE = 28;  // Size of each block
-        static DELAY = 400;  // Time taken for the tetromino to move down one block
+        static BLOCK_SIZE = 28;  // Size of each block (px)
+        static DELAY = 400;  // Time taken for the tetromino to move down one block (ms)
         static DELAY_INCREASED = 5;  // Tetromino falling speed increase factor when down arrow is pressed
 
         constructor(xs, ys, color = null) {
